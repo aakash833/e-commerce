@@ -27,21 +27,24 @@ export function Header({
 
   const handleLogoutConfirm = () => {
     setShowLogoutDialog(false);
-    onLogout?.(); // call logout prop if exists
+    onLogout?.();
   };
 
   return (
     <>
-      <header className="px-6 md:px-14 lg:px-24 bg-gray-700 text-white py-4 flex items-center justify-between sticky top-0 z-50">
-        <Link href="/products" className="text-3xl font-normal">
+      <header className="px-4 md:px-10 lg:px-24 bg-gray-700 text-white py-3 flex items-center justify-between sticky top-0 z-50">
+        {/* Brand */}
+        <Link href="/products" className="text-xl md:text-2xl font-medium">
           {title}
         </Link>
-        <div className="flex items-center gap-4">
+
+        {/* Actions */}
+        <div className="flex items-center gap-2 md:gap-4">
           {showProducts && (
             <Button
               onClick={onProductsClick}
               variant="ghost"
-              className="text-white text-3xl font-normal"
+              className="text-white text-base md:text-xl font-normal hidden sm:inline-flex"
             >
               Products
             </Button>
@@ -50,7 +53,7 @@ export function Header({
             <Button
               onClick={onCartClick}
               variant="ghost"
-              className="text-white text-3xl font-normal relative"
+              className="text-white text-base md:text-xl font-normal relative hidden sm:inline-flex"
             >
               Cart
               {cartItemsCount > 0 && (
@@ -64,19 +67,55 @@ export function Header({
             <Button
               onClick={() => setShowLogoutDialog(true)}
               variant="ghost"
-              className="text-white text-3xl font-normal"
+              className="text-white text-base md:text-xl font-normal hidden sm:inline-flex"
             >
               Logout
             </Button>
           )}
+
+          {/* Mobile Menu */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-white">
-                <Menu className="mt-1.5 h-6 w-6 size-4" />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:text-yellow-300 inline-flex sm:hidden"
+              >
+                <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-80">
+            <SheetContent side="right" className="w-72">
               <SidebarMenu showCloseButton={true} />
+
+              <div className="mt-4 space-y-2">
+                {showProducts && (
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start"
+                    onClick={onProductsClick}
+                  >
+                    Products
+                  </Button>
+                )}
+                {showCart && (
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start"
+                    onClick={onCartClick}
+                  >
+                    Cart ({cartItemsCount})
+                  </Button>
+                )}
+                {onLogout && (
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start text-red-600"
+                    onClick={() => setShowLogoutDialog(true)}
+                  >
+                    Logout
+                  </Button>
+                )}
+              </div>
             </SheetContent>
           </Sheet>
         </div>
